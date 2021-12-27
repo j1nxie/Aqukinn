@@ -6,10 +6,10 @@ version = 3
 name = "Aqukinn"
 version = "0.1.0"
 dependencies = [
- "lavalink-rs",
- "poise",
- "serenity 0.10.9 (registry+https://github.com/rust-lang/crates.io-index)",
+ "dotenv",
+ "serenity",
  "songbird",
+ "tokio",
  "tracing",
  "tracing-subscriber",
 ]
@@ -98,38 +98,6 @@ dependencies = [
  "tokio-rustls 0.22.0",
  "tungstenite 0.13.0",
  "webpki-roots 0.21.1",
-]
-
-[[package]]
-name = "async-tungstenite"
-version = "0.15.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "742cc7dcb20b2f84a42f4691aa999070ec7e78f8e7e7438bf14be7017b44907e"
-dependencies = [
- "futures-io",
- "futures-util",
- "log",
- "pin-project-lite",
- "tokio",
- "tokio-rustls 0.22.0",
- "tungstenite 0.15.0",
- "webpki-roots 0.21.1",
-]
-
-[[package]]
-name = "async-tungstenite"
-version = "0.16.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5682ea0913e5c20780fe5785abacb85a411e7437bf52a1bedb93ddb3972cb8dd"
-dependencies = [
- "futures-io",
- "futures-util",
- "log",
- "pin-project-lite",
- "tokio",
- "tokio-rustls 0.23.2",
- "tungstenite 0.16.0",
- "webpki-roots 0.22.1",
 ]
 
 [[package]]
@@ -288,41 +256,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "darling"
-version = "0.12.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5f2c43f534ea4b0b049015d00269734195e6d3f0f6635cb692251aca6f9f8b3c"
-dependencies = [
- "darling_core",
- "darling_macro",
-]
-
-[[package]]
-name = "darling_core"
-version = "0.12.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8e91455b86830a1c21799d94524df0845183fa55bafd9aa137b01c7d1065fa36"
-dependencies = [
- "fnv",
- "ident_case",
- "proc-macro2",
- "quote",
- "strsim",
- "syn",
-]
-
-[[package]]
-name = "darling_macro"
-version = "0.12.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "29b5acf0dea37a7f66f7b25d2c5e93fd46f8f6968b1a5d7a3e02e97768afc95a"
-dependencies = [
- "darling_core",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "dashmap"
 version = "4.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -330,18 +263,6 @@ checksum = "e77a43b28d0668df09411cb0bc9a8c2adc40f9a048afe863e05fd43251e8e39c"
 dependencies = [
  "cfg-if 1.0.0",
  "num_cpus",
-]
-
-[[package]]
-name = "dashmap"
-version = "5.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b799062aaf67eb976af3bdca031ee6f846d2f0a5710ddbb0d2efee33f3cc4760"
-dependencies = [
- "cfg-if 1.0.0",
- "num_cpus",
- "parking_lot",
- "serde",
 ]
 
 [[package]]
@@ -362,6 +283,12 @@ dependencies = [
  "pnet_macros",
  "pnet_macros_support",
 ]
+
+[[package]]
+name = "dotenv"
+version = "0.15.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "77c90badedccf4105eca100756a0b1289e191f6fcbdadd3cee1d2f614f97da8f"
 
 [[package]]
 name = "encoding_rs"
@@ -664,12 +591,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ident_case"
-version = "1.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b9e0384b61958566e926dc50660321d12159025e767c18e043daf26b70104c39"
-
-[[package]]
 name = "idna"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -742,30 +663,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7cc9ffccd38c451a86bf13657df244e9c3f37493cce8e5e21e940963777acc84"
 dependencies = [
  "wasm-bindgen",
-]
-
-[[package]]
-name = "lavalink-rs"
-version = "0.9.0-rc.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5e1d901920ac92e2c048032f356a8a1d014a407e8a6f923fa98488184950e403"
-dependencies = [
- "async-trait",
- "async-tungstenite 0.15.0",
- "dashmap 4.0.2",
- "futures",
- "http",
- "regex",
- "reqwest",
- "serde",
- "serde-aux",
- "serde_json",
- "serenity 0.10.9 (registry+https://github.com/rust-lang/crates.io-index)",
- "songbird",
- "tokio",
- "tokio-rustls 0.22.0",
- "typemap_rev",
- "version_check",
 ]
 
 [[package]]
@@ -1039,32 +936,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d4714e10f30cab023005adce048f2d30dd4ac4f093662abf2220855655ef8f90"
 dependencies = [
  "pnet_base",
-]
-
-[[package]]
-name = "poise"
-version = "0.1.0"
-source = "git+https://github.com/kangalioo/poise?branch=master#e94eb68f7481f4f949e09a71f0eab99f5db2ef2d"
-dependencies = [
- "async-trait",
- "chrono",
- "futures",
- "once_cell",
- "poise_macros",
- "regex",
- "serenity 0.10.9 (git+https://github.com/serenity-rs/serenity?branch=next)",
- "tokio",
-]
-
-[[package]]
-name = "poise_macros"
-version = "0.1.0"
-source = "git+https://github.com/kangalioo/poise?branch=master#e94eb68f7481f4f949e09a71f0eab99f5db2ef2d"
-dependencies = [
- "darling",
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
@@ -1361,17 +1232,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "serde-aux"
-version = "2.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "907c320ef8f45ce134b28ca9567ec58ec0d51dcae4e1ffe7ee0cc15517243810"
-dependencies = [
- "chrono",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "serde_derive"
 version = "1.0.132"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1441,33 +1301,6 @@ dependencies = [
  "typemap_rev",
  "url",
  "uwl",
-]
-
-[[package]]
-name = "serenity"
-version = "0.10.9"
-source = "git+https://github.com/serenity-rs/serenity?branch=next#b0dd88d36ca775fd99def53f1579faaf1d7d1fbb"
-dependencies = [
- "async-trait",
- "async-tungstenite 0.16.1",
- "base64 0.13.0",
- "bitflags",
- "bytes 1.1.0",
- "chrono",
- "dashmap 5.0.0",
- "flate2",
- "futures",
- "mime",
- "mime_guess",
- "parking_lot",
- "percent-encoding",
- "reqwest",
- "serde",
- "serde_json",
- "tokio",
- "tracing",
- "typemap_rev",
- "url",
 ]
 
 [[package]]
@@ -1546,7 +1379,7 @@ dependencies = [
  "async-tungstenite 0.14.0",
  "audiopus",
  "byteorder",
- "dashmap 4.0.2",
+ "dashmap",
  "discortp",
  "flume",
  "futures",
@@ -1555,7 +1388,7 @@ dependencies = [
  "rand 0.8.4",
  "serde",
  "serde_json",
- "serenity 0.10.9 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serenity",
  "serenity-voice-model",
  "spin_sleep",
  "streamcatcher",
@@ -1610,12 +1443,6 @@ dependencies = [
  "futures-util",
  "loom",
 ]
-
-[[package]]
-name = "strsim"
-version = "0.10.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "73473c0e59e6d5812c5dfe2a064a6444949f089e20eec9a2e5506596494e4623"
 
 [[package]]
 name = "subtle"
@@ -1889,48 +1716,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tungstenite"
-version = "0.15.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "983d40747bce878d2fb67d910dcb8bd3eca2b2358540c3cc1b98c027407a3ae3"
-dependencies = [
- "base64 0.13.0",
- "byteorder",
- "bytes 1.1.0",
- "http",
- "httparse",
- "log",
- "rand 0.8.4",
- "rustls 0.19.1",
- "sha-1",
- "thiserror",
- "url",
- "utf-8",
- "webpki 0.21.4",
-]
-
-[[package]]
-name = "tungstenite"
-version = "0.16.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6ad3713a14ae247f22a728a0456a545df14acf3867f905adff84be99e23b3ad1"
-dependencies = [
- "base64 0.13.0",
- "byteorder",
- "bytes 1.1.0",
- "http",
- "httparse",
- "log",
- "rand 0.8.4",
- "rustls 0.20.2",
- "sha-1",
- "thiserror",
- "url",
- "utf-8",
- "webpki 0.22.0",
-]
-
-[[package]]
 name = "typemap_rev"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1998,7 +1783,6 @@ dependencies = [
  "idna",
  "matches",
  "percent-encoding",
- "serde",
 ]
 
 [[package]]
