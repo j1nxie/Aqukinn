@@ -21,7 +21,7 @@ async fn ping(ctx: &Context, msg: &Message) -> CommandResult {
     let shard_manager = match data.get::<ShardManagerContainer>() {
         Some(v) => v,
         None => {
-            msg.reply(ctx, "there was a problem getting the shard manager").await?;
+            msg.reply(ctx, "there was a problem getting the shard manager.").await?;
 
             return Ok(());
         }
@@ -40,7 +40,7 @@ async fn ping(ctx: &Context, msg: &Message) -> CommandResult {
     };
 
     msg.reply(ctx, &format!("pong! the shard latency is {:?}", runner.latency)).await?;
-    
+
     Ok(())
 }
 

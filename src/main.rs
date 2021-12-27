@@ -1,4 +1,4 @@
-#[allow(non_snake_case)]
+#![allow(non_snake_case)]
 mod commands;
 mod hooks;
 
@@ -8,7 +8,6 @@ extern crate tracing;
 use std::{
     collections::{HashMap, HashSet},
     env,
-    fmt::Write,
     sync::Arc
 };
 
@@ -17,19 +16,14 @@ use serenity::{
     async_trait,
     client::bridge::gateway::{GatewayIntents, ShardManager},
     framework::standard::{
-        buckets::{LimitedFor, RevertBucket},
         macros::group,
         StandardFramework
     },
     http::Http,
     model::{
-        channel::{Channel, Message},
         gateway::Ready,
-        id::UserId,
-        permissions::Permissions,
         prelude::*
     },
-    utils::{content_safe, ContentSafeOptions}
 };
 use tokio::sync::Mutex;
 use crate::hooks::*;
@@ -89,7 +83,7 @@ async fn main() {
 
             match http.get_current_user().await {
                 Ok(bot_id) => (owners, bot_id.id),
-                Err(why) => panic!("Could not access the bot id: {:?}", why)
+                Err(why) => panic!("could not access the bot id: {:?}", why)
             }
         },
         Err(why) => panic!("[error] could not access application info: {:?}", why)
@@ -130,11 +124,11 @@ async fn main() {
 
     tokio::spawn(async move {
         tokio::signal::ctrl_c().await
-            .expect("Could not register ctrl+c handler");
+            .expect("could not register ctrl+c handler");
         shard_manager.lock().await.shutdown_all().await;
     });
 
-    if let Err(why) = client.start().await {
+    if let Err(why) = client.start_shard(2).await {
         error!("[error] client error: {:?}", why);
     }
 }
