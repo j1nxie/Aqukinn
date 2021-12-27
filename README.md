@@ -1,5 +1,5 @@
 # Aqukinn
-a discord bot built using the `[serenity-rs](https://github.com/serenity-rs/serenity)` library for my own server!
+a discord bot built using the [`serenity-rs`](https://github.com/serenity-rs/serenity) library for my own server!
 still very much a wip for now, will update more as i plan it out!
 # acknowledgements
 - [serenity-rs](https://github.com/serenity-rs/serenity/)
