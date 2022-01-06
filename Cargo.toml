@@ -12,14 +12,6 @@ tracing = "0.1.29"
 tracing-log = "0.1.2"
 tracing-subscriber = "0.3.4"
 
-[dependencies.tokio]
-version = "1.15.0"
-features = [
-    "macros",
-    "rt-multi-thread",
-    "signal"
-]
-
 [dependencies.serenity]
 version = "0.10.9"
 features = ["framework", "client", "voice", "cache"]
