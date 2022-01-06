@@ -1,5 +1,6 @@
 # Aqukinn
 ![Minato Aqua](Aqukinn.png)
+
 a discord bot built using the [`serenity-rs`](https://github.com/serenity-rs/serenity) library for my own server!
 # usage
 - if you want to build from source:
