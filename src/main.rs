@@ -11,10 +11,13 @@ use std::{
     sync::Arc
 };
 
-use serenity::prelude::*;
 use serenity::{
     async_trait,
-    client::bridge::gateway::{GatewayIntents, ShardManager},
+    client::{
+        Client,
+        Context,
+        bridge::gateway::{GatewayIntents, ShardManager},
+    },
     framework::standard::{
         macros::group,
         StandardFramework
@@ -22,12 +25,26 @@ use serenity::{
     http::Http,
     model::{
         gateway::Ready,
-        prelude::*
+        prelude::*,
+        id::GuildId,
     },
+    prelude::*,
 };
+
+use lavalink_rs::{
+    gateway::*,
+    model::*,
+    LavalinkClient
+};
+
+use songbird::SerenityInit;
+
 use tokio::sync::Mutex;
 use crate::hooks::*;
-use crate::commands::meta::*;
+use crate::commands::{
+    meta::*,
+    music::*,
+};
 
 pub struct ShardManagerContainer;
 
@@ -41,7 +58,26 @@ impl TypeMapKey for CommandCounter {
     type Value = HashMap<String, u64>;
 }
 
+pub struct Lavalink;
+
+impl TypeMapKey for Lavalink {
+    type Value = LavalinkClient;
+}
+
 struct Handler;
+struct LavalinkHandler;
+
+#[async_trait]
+impl LavalinkEventHandler for LavalinkHandler {
+    async fn track_start(&self, _client: LavalinkClient, event: TrackStart) {
+        info!("track started!\nguild: {}", event.guild_id);
+    }
+    
+    async fn track_finish(&self, _client: LavalinkClient, event: TrackFinish) {
+        info!("track finished!\nguild: {}", event.guild_id);
+    }
+}
+
 
 #[async_trait]
 impl EventHandler for Handler {
@@ -52,19 +88,28 @@ impl EventHandler for Handler {
     async fn resume(&self, _: Context, _: ResumedEvent) {
         info!("resumed!");
     }
+    
+    async fn cache_ready(&self, _: Context, _guilds: Vec<GuildId>) {
+        info!("cache is ready!");
+    }
 }
 
 #[group]
 #[commands(ping)]
 struct General;
 
+#[group]
+#[commands(join, leave, play, now_playing, skip)]
+struct Music;
+
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // load env located at `./.env`, relative to cwd
     dotenv::dotenv()
         .expect("[error] failed to load .env file");
     // initialize logger
     tracing_subscriber::fmt::init();
+    info!("tracing initialized");
 
     // set discord bot token
     let token = env::var("DISCORD_TOKEN")
@@ -101,7 +146,8 @@ async fn main() {
         .unrecognised_command(unknown_command)
         .on_dispatch_error(dispatch_error)
         .help(&HELP)
-        .group(&GENERAL_GROUP);
+        .group(&GENERAL_GROUP)
+        .group(&MUSIC_GROUP);
 //        .bucket("complicated", |b| b.limit(2).time_span(30).delay(5) // maximum 2 times every 30s, with a delay of 5s per channel
 //            .limit_for(LimitedFor::Channel)
 //            .await_ratelimits(1)
@@ -112,14 +158,24 @@ async fn main() {
         .framework(framework)
         .intents(GatewayIntents::all())
         .type_map_insert::<CommandCounter>(HashMap::default())
+        .register_songbird()
         .await
         .expect("[error] error creating client");
 
+    let lava_client = LavalinkClient::builder(bot_id)
+        .set_host("127.0.0.1")
+        .set_password(
+            env::var("LAVALINK_PASSWORD").unwrap_or_else(|_| "youshallnotpass".to_string())
+        )
+        .build(LavalinkHandler)
+        .await?;
+    
     {
         let mut data = client.data.write().await;
         data.insert::<ShardManagerContainer>(client.shard_manager.clone());
+        data.insert::<Lavalink>(lava_client);
     }
-    
+
     let shard_manager = client.shard_manager.clone();
 
     tokio::spawn(async move {
@@ -128,7 +184,9 @@ async fn main() {
         shard_manager.lock().await.shutdown_all().await;
     });
 
-    if let Err(why) = client.start_shard(2).await {
+    if let Err(why) = client.start_shards(2).await {
         error!("[error] client error: {:?}", why);
     }
+
+    Ok(())
 }
