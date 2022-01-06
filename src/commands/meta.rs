@@ -45,7 +45,7 @@ async fn ping(ctx: &Context, msg: &Message) -> CommandResult {
 }
 
 #[help]
-#[individual_command_tip = "test"]
+#[individual_command_tip = "こんあくあ！湊あくあです！Aqukinn is ready for service!\ntype `a!help <command>` for further help!"]
 #[command_not_found_text = "could not find: `{}`"]
 #[max_levenshtein_distance(3)]
 #[indention_prefix = "+"]
