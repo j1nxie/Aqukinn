@@ -1,5 +1,3 @@
+/Lavalink
 /target
 .env
-Lavalink.jar
-logs/
-application.yml
