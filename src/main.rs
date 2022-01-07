@@ -99,7 +99,7 @@ impl EventHandler for Handler {
 struct General;
 
 #[group]
-#[commands(join, leave, play, now_playing, skip)]
+#[commands(join, leave, play, pause, resume, stop, now_playing, skip, clear_queue)]
 struct Music;
 
 #[tokio::main]
