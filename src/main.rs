@@ -6,7 +6,10 @@ mod hooks;
 extern crate tracing;
 
 use std::{
-    collections::{HashMap, HashSet},
+    collections::{
+        HashMap,
+        HashSet,
+    },
     env,
     sync::Arc,
 };
@@ -16,7 +19,10 @@ use serenity::{
     client::{
         Client,
         Context,
-        bridge::gateway::{GatewayIntents, ShardManager},
+        bridge::gateway::{
+            GatewayIntents,
+            ShardManager,
+        },
     },
     framework::standard::{
         macros::group,
