@@ -1,4 +1,3 @@
-use serenity::prelude::*;
 use serenity::{
     framework::standard::{
         CommandResult,
@@ -6,6 +5,7 @@ use serenity::{
         macros::hook,
     },
     model::prelude::*,
+    prelude::*,
 };
 use crate::CommandCounter;
 

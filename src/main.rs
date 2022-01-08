@@ -40,10 +40,12 @@ use lavalink_rs::{
 use songbird::SerenityInit;
 
 use tokio::sync::Mutex;
-use crate::hooks::*;
-use crate::commands::{
-    meta::*,
-    music::*,
+use crate::{
+    hooks::*,
+    commands::{
+        meta::*,
+        music::*,
+    },
 };
 
 pub struct ShardManagerContainer;
