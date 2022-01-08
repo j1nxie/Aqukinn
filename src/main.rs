@@ -8,7 +8,7 @@ extern crate tracing;
 use std::{
     collections::{HashMap, HashSet},
     env,
-    sync::Arc
+    sync::Arc,
 };
 
 use serenity::{
@@ -20,7 +20,7 @@ use serenity::{
     },
     framework::standard::{
         macros::group,
-        StandardFramework
+        StandardFramework,
     },
     http::Http,
     model::{
@@ -34,7 +34,7 @@ use serenity::{
 use lavalink_rs::{
     gateway::*,
     model::*,
-    LavalinkClient
+    LavalinkClient,
 };
 
 use songbird::SerenityInit;
@@ -128,10 +128,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             match http.get_current_user().await {
                 Ok(bot_id) => (owners, bot_id.id),
-                Err(why) => panic!("could not access the bot id: {:?}", why)
+                Err(why) => panic!("could not access the bot id: {:?}", why),
             }
         },
-        Err(why) => panic!("[error] could not access application info: {:?}", why)
+        Err(why) => panic!("[error] could not access application info: {:?}", why),
     };
 
     let framework = StandardFramework::new()

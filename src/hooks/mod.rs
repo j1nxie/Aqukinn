@@ -3,9 +3,9 @@ use serenity::{
     framework::standard::{
         CommandResult,
         DispatchError,
-        macros::hook
+        macros::hook,
     },
-    model::prelude::*
+    model::prelude::*,
 };
 use crate::CommandCounter;
 

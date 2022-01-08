@@ -6,10 +6,10 @@ use serenity::{
         CommandResult,
         CommandGroup,
         HelpOptions,
-        help_commands
+        help_commands,
     },
     model::prelude::*,
-    prelude::*
+    prelude::*,
 };
 use std::collections::HashSet;
 use crate::ShardManagerContainer;
