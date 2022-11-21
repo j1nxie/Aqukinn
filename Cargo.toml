@@ -10,6 +10,7 @@ twilight-cache-inmemory = "0.14.0"
 twilight-gateway = "0.14.0"
 twilight-http = "0.14.0"
 twilight-model = "0.14.0"
+twilight-interactions = "0.14.0"
 tokio = { version = "1.22.0", features = ["full"] }
 futures = "0.3.25"
 dotenv = "0.15.0"
