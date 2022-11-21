@@ -9,6 +9,9 @@ use twilight_model::gateway::Intents;
 use dotenv::dotenv;
 use tracing::{error, info, warn};
 use tracing_subscriber::FmtSubscriber;
+use crate::commands::meta::*;
+
+mod commands;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -30,10 +33,8 @@ async fn main() -> anyhow::Result<()> {
     let (cluster, mut events) = Cluster::new(token.clone(), Intents::GUILD_MESSAGES | Intents::MESSAGE_CONTENT).await?;
     let cluster = Arc::new(cluster);
 
-    let cluster_spawn = Arc::clone(&cluster);
-
     tokio::spawn(async move {
-        cluster_spawn.up().await;
+        cluster.up().await;
     });
 
     let http = Arc::new(HttpClient::new(token));
@@ -55,10 +56,11 @@ async fn handle_event(
     http: Arc<HttpClient>
 ) -> Result<(), Box<dyn Error + Send + Sync>> {
     match event {
-        Event::MessageCreate(msg) if msg.content == "!ping" => {
-            http.create_message(msg.channel_id)
-                .content("Pong!")?
-                .await?;
+        Event::MessageCreate(msg) => {
+            match msg.content {
+                _ if msg.content == "!ping" => ping(http, msg.channel_id).await?,
+                _ => {},
+            }
         },
 
         Event::ShardConnected(_) => {
