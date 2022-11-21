@@ -7,7 +7,7 @@ use twilight_gateway::{Cluster, Event};
 use twilight_http::Client as HttpClient;
 use twilight_model::gateway::Intents;
 use dotenv::dotenv;
-use tracing::{error, info};
+use tracing::{error, info, warn};
 use tracing_subscriber::FmtSubscriber;
 
 #[tokio::main]
@@ -62,8 +62,12 @@ async fn handle_event(
         },
 
         Event::ShardConnected(_) => {
-            info!("Connected on shard {shard_id}");
+            info!("Connected on shard {shard_id}.");
         },
+
+        Event::ShardDisconnected(_) => {
+            warn!("Shard {shard_id} disconnected!");
+        }
 
         _ => {},
     }
