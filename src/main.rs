@@ -7,15 +7,24 @@ use twilight_gateway::{Cluster, Event};
 use twilight_http::Client as HttpClient;
 use twilight_model::gateway::Intents;
 use dotenv::dotenv;
+use tracing::{error, info};
+use tracing_subscriber::FmtSubscriber;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    // initialize tracer subscriber
+    let tracing_subscriber = FmtSubscriber::new();
+    tracing::subscriber::set_global_default(tracing_subscriber)
+        .expect("Setting tracing default failed.");
+
+    // initialize Discord token
     dotenv().ok();
     let token: String;
     if let Ok(s) = env::var("DISCORD_TOKEN") {
         token = s;
     } else {
-        panic!("Discord bot token not found!");
+        error!("Discord token not found!");
+        panic!();
     }
 
     let (cluster, mut events) = Cluster::new(token.clone(), Intents::GUILD_MESSAGES | Intents::MESSAGE_CONTENT).await?;
@@ -53,7 +62,7 @@ async fn handle_event(
         },
 
         Event::ShardConnected(_) => {
-            println!("Connected on shard {shard_id}");
+            info!("Connected on shard {shard_id}");
         },
 
         _ => {},
