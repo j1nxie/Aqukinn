@@ -1,13 +1,23 @@
-use std::{error::Error, sync::Arc};
-use twilight_http::Client as HttpClient;
-use twilight_model::id::{Id, marker::ChannelMarker};
+use twilight_model::channel::Message;
+use crate::State;
 
-pub async fn ping(
-    http: Arc<HttpClient>,
-    channel_id: Id<ChannelMarker>,
-) -> Result<(), Box<dyn Error + Send + Sync>> {
-    http.create_message(channel_id)
-        .content("Pong!")?
-        .await?;
+pub async fn ping(msg: Message, state: State) -> anyhow::Result<()> {
+    let shard_latency = state.shard.info()?.latency().average();
+    match shard_latency {
+        Some(s) => 
+            state
+            .http
+            .create_message(msg.channel_id)
+            .content(&format!("Pong! Shard latency is {:?}", s))?
+            .await?,
+
+        None => 
+            state
+            .http
+            .create_message(msg.channel_id)
+            .content("Pong! Shard latency not available yet!")?
+            .await?,
+    };
+
     Ok(())
 }
